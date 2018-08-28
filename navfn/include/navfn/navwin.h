@@ -2,7 +2,6 @@
 // drawing fns for nav fn
 // 
 
-#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -37,7 +37,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_LIBGEN_H
 #include <libgen.h>
+#endif
+#include <boost/filesystem.hpp>
 #include <fstream>
 
 #include "ros/ros.h"
@@ -145,12 +148,14 @@ class MapServer
             ROS_ERROR("The image tag cannot be an empty string.");
             exit(-1);
           }
-          if(mapfname[0] != '/')
+
+          boost::filesystem::path mapfpath(mapfname);
+          if (!mapfpath.is_absolute())
           {
-            // dirname can modify what you pass it
-            char* fname_copy = strdup(fname.c_str());
-            mapfname = std::string(dirname(fname_copy)) + '/' + mapfname;
-            free(fname_copy);
+            boost::filesystem::path dir(fname);
+            dir = dir.parent_path();
+            mapfpath = dir / mapfpath;
+            mapfname = mapfpath.string();
           }
         } catch (YAML::InvalidScalar &) {
           ROS_ERROR("The map does not contain an image tag or it is invalid.");

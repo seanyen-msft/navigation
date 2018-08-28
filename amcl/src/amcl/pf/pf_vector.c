@@ -33,6 +33,10 @@
 #include "amcl/pf/pf_vector.h"
 #include "amcl/pf/eig3.h"
 
+//https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/finite-finitef?view=vs-2017
+#ifdef _MSC_VER
+#define finite _finite
+#endif
 
 // Return a zero vector
 pf_vector_t pf_vector_zero()
