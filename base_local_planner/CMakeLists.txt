@@ -29,6 +29,8 @@ find_package(Boost REQUIRED
 
 find_package(Eigen3 REQUIRED)
 remove_definitions(-DDISABLE_LIBUSB-1.0)
+add_definitions(-D_USE_MATH_DEFINES)
+
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
@@ -83,7 +85,7 @@ catkin_package(
 #set(ROS_COMPILE_FLAGS "-g" ${ROS_COMPILE_FLAGS})
 #set(ROS_LINK_FLAGS "-g" ${ROS_LINK_FLAGS})
 
-add_library(base_local_planner
+add_library(base_local_planner STATIC
 	src/footprint_helper.cpp
 	src/goal_functions.cpp
 	src/map_cell.cpp
@@ -112,7 +114,7 @@ target_link_libraries(base_local_planner
     ${Eigen_LIBRARIES}
     )
 
-add_library(trajectory_planner_ros
+add_library(trajectory_planner_ros STATIC
 	src/trajectory_planner.cpp
 	src/trajectory_planner_ros.cpp)
 add_dependencies(trajectory_planner_ros ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

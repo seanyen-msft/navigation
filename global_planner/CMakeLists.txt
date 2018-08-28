@@ -20,6 +20,8 @@ generate_dynamic_reconfigure_options(
   cfg/GlobalPlanner.cfg
 )
 
+add_definitions(-D_USE_MATH_DEFINES)
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
@@ -32,6 +34,7 @@ catkin_package(
     nav_msgs
     pluginlib
     roscpp
+    tf2
     tf2_ros
 )
 
@@ -40,7 +43,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} STATIC
   src/quadratic_calculator.cpp
   src/dijkstra.cpp
   src/astar.cpp

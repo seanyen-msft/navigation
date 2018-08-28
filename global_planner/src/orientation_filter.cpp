@@ -34,6 +34,7 @@
  *
  * Author: David V. Lu!!
  *********************************************************************/
+#include <array>
 #include <global_planner/orientation_filter.h>
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2/utils.h>

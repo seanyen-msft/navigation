@@ -24,7 +24,6 @@
  * Date: 18 Dec 2002
  * CVS: $Id: pf_kdtree.c 7057 2008-10-02 00:44:06Z gbiggs $
  *************************************************************************/
-
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>

@@ -37,7 +37,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <libgen.h>
+
+#include <boost/filesystem.hpp>
 #include <fstream>
 
 #include "ros/ros.h"
@@ -45,6 +46,8 @@
 #include "map_server/image_loader.h"
 #include "nav_msgs/MapMetaData.h"
 #include "yaml-cpp/yaml.h"
+
+namespace fs = boost::filesystem;
 
 #ifdef HAVE_YAMLCPP_GT_0_5_0
 // The >> operator disappeared in yaml-cpp 0.5, so this function is
@@ -139,18 +142,25 @@ class MapServer
         }
         try {
           doc["image"] >> mapfname;
+
           // TODO: make this path-handling more robust
           if(mapfname.size() == 0)
           {
             ROS_ERROR("The image tag cannot be an empty string.");
             exit(-1);
           }
-          if(mapfname[0] != '/')
+          
+          if(!fs::exists(fs::status(mapfname)))
           {
-            // dirname can modify what you pass it
-            char* fname_copy = strdup(fname.c_str());
-            mapfname = std::string(dirname(fname_copy)) + '/' + mapfname;
-            free(fname_copy);
+            fs::path dir(fname);
+            dir += mapfname;
+            mapfname = dir.string();
+          }
+
+          if (!fs::exists(fs::status(mapfname)))
+          {
+            ROS_ERROR("The image tag cannot be found.");
+            exit(-1);
           }
         } catch (YAML::InvalidScalar &) {
           ROS_ERROR("The map does not contain an image tag or it is invalid.");

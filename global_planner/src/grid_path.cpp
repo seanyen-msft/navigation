@@ -35,9 +35,10 @@
  * Author: Eitan Marder-Eppstein
  *         David V. Lu!!
  *********************************************************************/
-#include <global_planner/grid_path.h>
 #include <algorithm>
 #include <stdio.h>
+#include <global_planner/grid_path.h>
+
 namespace global_planner {
 
 bool GridPath::getPath(float* potential, double start_x, double start_y, double end_x, double end_y, std::vector<std::pair<float, float> >& path) {

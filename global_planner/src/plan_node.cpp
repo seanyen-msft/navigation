@@ -35,6 +35,7 @@
  * Author: Bhaskara Marthi
  *         David V. Lu!!
  *********************************************************************/
+#include <algorithm>
 #include <global_planner/planner_core.h>
 #include <navfn/MakeNavPlan.h>
 #include <boost/shared_ptr.hpp>

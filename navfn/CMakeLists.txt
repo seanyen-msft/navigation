@@ -55,7 +55,7 @@ catkin_package(
         visualization_msgs
 )
 
-add_library (navfn src/navfn.cpp src/navfn_ros.cpp)
+add_library (navfn STATIC src/navfn.cpp src/navfn_ros.cpp)
 target_link_libraries(navfn
     ${catkin_LIBRARIES}
     )

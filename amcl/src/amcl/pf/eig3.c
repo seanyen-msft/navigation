@@ -8,8 +8,11 @@
 #define MAX(a, b) ((a)>(b)?(a):(b))
 #endif
 
-//#define n 3
-static int n = 3;
+#ifdef WIN32
+#define kNumElements 3
+#else
+static int kNumElements = 3;
+#endif
 
 static double hypot2(double x, double y) {
   return sqrt(x*x+y*y);
@@ -17,7 +20,7 @@ static double hypot2(double x, double y) {
 
 // Symmetric Householder reduction to tridiagonal form.
 
-static void tred2(double V[n][n], double d[n], double e[n]) {
+static void tred2(double V[kNumElements][kNumElements], double d[kNumElements], double e[kNumElements]) {
 
 //  This is derived from the Algol procedures tred2 by
 //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -26,13 +29,13 @@ static void tred2(double V[n][n], double d[n], double e[n]) {
 
   int i,j,k;
   double f,g,h,hh;
-  for (j = 0; j < n; j++) {
-    d[j] = V[n-1][j];
+  for (j = 0; j < kNumElements; j++) {
+    d[j] = V[kNumElements-1][j];
   }
 
   // Householder reduction to tridiagonal form.
 
-  for (i = n-1; i > 0; i--) {
+  for (i = kNumElements-1; i > 0; i--) {
 
     // Scale to avoid under/overflow.
 
@@ -104,8 +107,8 @@ static void tred2(double V[n][n], double d[n], double e[n]) {
 
   // Accumulate transformations.
 
-  for (i = 0; i < n-1; i++) {
-    V[n-1][i] = V[i][i];
+  for (i = 0; i < kNumElements-1; i++) {
+    V[kNumElements-1][i] = V[i][i];
     V[i][i] = 1.0;
     h = d[i+1];
     if (h != 0.0) {
@@ -126,17 +129,17 @@ static void tred2(double V[n][n], double d[n], double e[n]) {
       V[k][i+1] = 0.0;
     }
   }
-  for (j = 0; j < n; j++) {
-    d[j] = V[n-1][j];
-    V[n-1][j] = 0.0;
+  for (j = 0; j < kNumElements; j++) {
+    d[j] = V[kNumElements-1][j];
+    V[kNumElements-1][j] = 0.0;
   }
-  V[n-1][n-1] = 1.0;
+  V[kNumElements-1][kNumElements-1] = 1.0;
   e[0] = 0.0;
 } 
 
 // Symmetric tridiagonal QL algorithm.
 
-static void tql2(double V[n][n], double d[n], double e[n]) {
+static void tql2(double V[kNumElements][kNumElements], double d[kNumElements], double e[kNumElements]) {
 
 //  This is derived from the Algol procedures tql2, by
 //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -147,21 +150,21 @@ static void tql2(double V[n][n], double d[n], double e[n]) {
   double g,p,r,dl1,h,f,tst1,eps;
   double c,c2,c3,el1,s,s2;
 
-  for (i = 1; i < n; i++) {
+  for (i = 1; i < kNumElements; i++) {
     e[i-1] = e[i];
   }
-  e[n-1] = 0.0;
+  e[kNumElements-1] = 0.0;
 
   f = 0.0;
   tst1 = 0.0;
   eps = pow(2.0,-52.0);
-  for (l = 0; l < n; l++) {
+  for (l = 0; l < kNumElements; l++) {
 
     // Find small subdiagonal element
 
     tst1 = MAX(tst1,fabs(d[l]) + fabs(e[l]));
     m = l;
-    while (m < n) {
+    while (m < kNumElements) {
       if (fabs(e[m]) <= eps*tst1) {
         break;
       }
@@ -188,7 +191,7 @@ static void tql2(double V[n][n], double d[n], double e[n]) {
         d[l+1] = e[l] * (p + r);
         dl1 = d[l+1];
         h = g - d[l];
-        for (i = l+2; i < n; i++) {
+        for (i = l+2; i < kNumElements; i++) {
           d[i] -= h;
         }
         f = f + h;
@@ -217,7 +220,7 @@ static void tql2(double V[n][n], double d[n], double e[n]) {
 
           // Accumulate transformation.
 
-          for (k = 0; k < n; k++) {
+          for (k = 0; k < kNumElements; k++) {
             h = V[k][i+1];
             V[k][i+1] = s * V[k][i] + c * h;
             V[k][i] = c * V[k][i] - s * h;
@@ -237,10 +240,10 @@ static void tql2(double V[n][n], double d[n], double e[n]) {
   
   // Sort eigenvalues and corresponding vectors.
 
-  for (i = 0; i < n-1; i++) {
+  for (i = 0; i < kNumElements-1; i++) {
     k = i;
     p = d[i];
-    for (j = i+1; j < n; j++) {
+    for (j = i+1; j < kNumElements; j++) {
       if (d[j] < p) {
         k = j;
         p = d[j];
@@ -249,7 +252,7 @@ static void tql2(double V[n][n], double d[n], double e[n]) {
     if (k != i) {
       d[k] = d[i];
       d[i] = p;
-      for (j = 0; j < n; j++) {
+      for (j = 0; j < kNumElements; j++) {
         p = V[j][i];
         V[j][i] = V[j][k];
         V[j][k] = p;
@@ -258,11 +261,11 @@ static void tql2(double V[n][n], double d[n], double e[n]) {
   }
 }
 
-void eigen_decomposition(double A[n][n], double V[n][n], double d[n]) {
+void eigen_decomposition(double A[kNumElements][kNumElements], double V[kNumElements][kNumElements], double d[kNumElements]) {
   int i,j;
-  double e[n];
-  for (i = 0; i < n; i++) {
-    for (j = 0; j < n; j++) {
+  double e[kNumElements];
+  for (i = 0; i < kNumElements; i++) {
+    for (j = 0; j < kNumElements; j++) {
       V[i][j] = A[i][j];
     }
   }

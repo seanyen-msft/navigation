@@ -47,7 +47,7 @@ include_directories(
 )
 
 # move_base
-add_library(move_base
+add_library(move_base STATIC
   src/move_base.cpp
 )
 target_link_libraries(move_base

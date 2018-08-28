@@ -26,7 +26,6 @@
 // CVS: $Id: amcl_odom.cc 7057 2008-10-02 00:44:06Z gbiggs $
 //
 ///////////////////////////////////////////////////////////////////////////
-
 #include <algorithm>
 
 #include <sys/types.h> // required by Darwin

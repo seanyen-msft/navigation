@@ -31,7 +31,7 @@ catkin_package(
         tf2_ros
 )
 
-add_library(clear_costmap_recovery src/clear_costmap_recovery.cpp)
+add_library(clear_costmap_recovery STATIC src/clear_costmap_recovery.cpp)
 add_dependencies(clear_costmap_recovery ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(clear_costmap_recovery ${catkin_LIBRARIES})
 

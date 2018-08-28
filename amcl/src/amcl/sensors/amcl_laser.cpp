@@ -31,7 +31,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <assert.h>
+#ifdef WIN32
+#else
 #include <unistd.h>
+#endif
 
 #include "amcl/sensors/amcl_laser.h"
 

@@ -33,6 +33,8 @@ include_directories(
 )
 
 add_definitions(${EIGEN3_DEFINITIONS})
+add_definitions(-D_USE_MATH_DEFINES)
+
 
 # messages
 add_message_files(
@@ -82,7 +84,7 @@ catkin_package(
         Boost
 )
 
-add_library(costmap_2d
+add_library(costmap_2d STATIC
   src/array_parser.cpp
   src/costmap_2d.cpp
   src/observation_buffer.cpp
@@ -100,7 +102,7 @@ target_link_libraries(costmap_2d
   ${catkin_LIBRARIES}
 )
 
-add_library(layers
+add_library(layers STATIC
   plugins/inflation_layer.cpp
   plugins/obstacle_layer.cpp
   plugins/static_layer.cpp

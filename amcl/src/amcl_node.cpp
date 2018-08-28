@@ -19,7 +19,6 @@
  */
 
 /* Author: Brian Gerkey */
-
 #include <algorithm>
 #include <vector>
 #include <map>
@@ -1018,12 +1017,20 @@ AmclNode::uniformPoseGenerator(void* arg)
 {
   map_t* map = (map_t*)arg;
 #if NEW_UNIFORM_SAMPLING
+#ifdef WIN32
+  unsigned int rand_index = rand() * free_space_indices.size();
+#else
   unsigned int rand_index = drand48() * free_space_indices.size();
+#endif
   std::pair<int,int> free_point = free_space_indices[rand_index];
   pf_vector_t p;
   p.v[0] = MAP_WXGX(map, free_point.first);
   p.v[1] = MAP_WYGY(map, free_point.second);
+#ifdef WIN32
+  p.v[2] = rand() * 2 * M_PI - M_PI;
+#else
   p.v[2] = drand48() * 2 * M_PI - M_PI;
+#endif
 #else
   double min_x, max_x, min_y, max_y;
 
