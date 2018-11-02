@@ -113,7 +113,7 @@ void voxelCallback(const ros::Publisher& pub, const costmap_2d::VoxelGridConstPt
   m.ns = g_marker_ns;
   m.id = 0;
   m.type = visualization_msgs::Marker::CUBE_LIST;
-  m.action = visualization_msgs::Marker::MK_ADD;
+  m.action = visualization_msgs::Marker::ADD;
   m.pose.orientation.w = 1.0;
   m.scale.x = x_res;
   m.scale.y = y_res;
