@@ -102,7 +102,7 @@ target_link_libraries(costmap_2d
   ${catkin_LIBRARIES}
 )
 
-add_library(layers STATIC
+add_library(layers
   plugins/inflation_layer.cpp
   plugins/obstacle_layer.cpp
   plugins/static_layer.cpp
