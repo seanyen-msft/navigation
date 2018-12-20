@@ -84,7 +84,7 @@ catkin_package(
         Boost
 )
 
-add_library(costmap_2d STATIC
+add_library(costmap_2d
   src/array_parser.cpp
   src/costmap_2d.cpp
   src/observation_buffer.cpp
@@ -196,8 +196,7 @@ install( TARGETS
 install(TARGETS
     costmap_2d
     layers
-    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
 install(FILES costmap_plugins.xml
