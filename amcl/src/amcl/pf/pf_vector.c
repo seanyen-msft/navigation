@@ -33,6 +33,10 @@
 #include "amcl/pf/pf_vector.h"
 #include "amcl/pf/eig3.h"
 
+//https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/finite-finitef?view=vs-2017
+#ifdef _MSC_VER
+#define finite _finite
+#endif
 
 // Return a zero vector
 pf_vector_t pf_vector_zero()
@@ -53,7 +57,7 @@ int pf_vector_finite(pf_vector_t a)
   int i;
   
   for (i = 0; i < 3; i++)
-    if (!isfinite(a.v[i]))
+    if (!finite(a.v[i]))
       return 0;
   
   return 1;
@@ -151,7 +155,7 @@ int pf_matrix_finite(pf_matrix_t a)
   
   for (i = 0; i < 3; i++)
     for (j = 0; j < 3; j++)
-      if (!isfinite(a.m[i][j]))
+      if (!finite(a.m[i][j]))
         return 0;
   
   return 1;

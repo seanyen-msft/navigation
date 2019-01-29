@@ -33,6 +33,7 @@
 #include "amcl/pf/pf.h"
 #include "amcl/pf/pf_pdf.h"
 #include "amcl/pf/pf_kdtree.h"
+#include "win_utils.hpp"
 
 
 // Compute the required number of samples, given that there are k bins
@@ -51,11 +52,7 @@ pf_t *pf_alloc(int min_samples, int max_samples,
   pf_sample_set_t *set;
   pf_sample_t *sample;
   
-  #ifdef WIN32
-  srand((unsigned int)time(NULL));
-  #else
   srand48(time(NULL));
-  #endif
   
   pf = calloc(1, sizeof(pf_t));
 
@@ -363,11 +360,7 @@ void pf_update_resample(pf_t *pf)
   {
     sample_b = set_b->samples + set_b->sample_count++;
 
-    #if WIN32
-    if(rand() < w_diff)
-    #else
     if(drand48() < w_diff)
-    #endif
       sample_b->pose = (pf->random_pose_fn)(pf->random_pose_data);
     else
     {
@@ -397,11 +390,7 @@ void pf_update_resample(pf_t *pf)
 
       // Naive discrete event sampler
       double r;
-      #if WIN32
-      r = (double)rand();
-      #else
       r = drand48();
-      #endif
       for(i=0;i<set_a->sample_count;i++)
       {
         if((c[i] <= r) && (r < c[i+1]))

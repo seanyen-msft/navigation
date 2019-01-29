@@ -24,8 +24,6 @@ find_package(catkin REQUIRED
 
 find_package(Boost REQUIRED)
 
-add_definitions(-D_USE_MATH_DEFINES)
-
 # dynamic reconfigure
 generate_dynamic_reconfigure_options(
     cfg/AMCL.cfg
@@ -50,8 +48,14 @@ catkin_package(
 
 include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+include_directories(src/include)
 
-add_library(amcl_pf STATIC
+check_include_file(unistd.h HAVE_UNISTD_H)
+if (HAVE_UNISTD_H)
+  add_definitions(-DHAVE_UNISTD_H)
+endif (HAVE_UNISTD_H)
+
+add_library(amcl_pf
                     src/amcl/pf/pf.c
                     src/amcl/pf/pf_kdtree.c
                     src/amcl/pf/pf_pdf.c
@@ -59,14 +63,14 @@ add_library(amcl_pf STATIC
                     src/amcl/pf/eig3.c
                     src/amcl/pf/pf_draw.c)
 
-add_library(amcl_map STATIC
+add_library(amcl_map
                     src/amcl/map/map.c
                     src/amcl/map/map_cspace.cpp
                     src/amcl/map/map_range.c
                     src/amcl/map/map_store.c
                     src/amcl/map/map_draw.c)
 
-add_library(amcl_sensors STATIC
+add_library(amcl_sensors
                     src/amcl/sensors/amcl_sensor.cpp
                     src/amcl/sensors/amcl_odom.cpp
                     src/amcl/sensors/amcl_laser.cpp)
@@ -84,10 +88,13 @@ target_link_libraries(amcl
 )
 
 install( TARGETS
-    amcl amcl_sensors amcl_map amcl_pf
-    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+    amcl
+    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install( TARGETS
+    amcl_sensors amcl_map amcl_pf
+    DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
 install(DIRECTORY include/amcl/

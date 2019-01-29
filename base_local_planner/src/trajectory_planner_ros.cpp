@@ -37,7 +37,7 @@
 
 #include <base_local_planner/trajectory_planner_ros.h>
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 

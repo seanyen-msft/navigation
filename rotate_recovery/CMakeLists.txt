@@ -37,13 +37,12 @@ catkin_package(
     tf2_ros
 )
 
-add_library(rotate_recovery STATIC src/rotate_recovery.cpp)
+add_library(rotate_recovery src/rotate_recovery.cpp)
 add_dependencies(rotate_recovery ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(rotate_recovery ${catkin_LIBRARIES})
 
 install(TARGETS rotate_recovery
-       ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-       LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+       DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
        )
 
 install(DIRECTORY include/${PROJECT_NAME}/

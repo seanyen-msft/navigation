@@ -391,7 +391,7 @@ void Costmap2DROS::mapUpdateLoop(double frequency)
   ros::Rate r(frequency);
   while (nh.ok() && !map_update_thread_shutdown_)
   {
-    #ifndef WIN32
+    #ifdef HAVE_SYS_TIME_H
     struct timeval start, end;
     double start_t, end_t, t_diff;
     gettimeofday(&start, NULL);
@@ -399,7 +399,7 @@ void Costmap2DROS::mapUpdateLoop(double frequency)
     
     updateMap();
 
-    #ifndef WIN32
+    #ifdef HAVE_SYS_TIME_H
     gettimeofday(&end, NULL);
     start_t = start.tv_sec + double(start.tv_usec) / 1e6;
     end_t = end.tv_sec + double(end.tv_usec) / 1e6;

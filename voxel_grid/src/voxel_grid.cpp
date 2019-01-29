@@ -35,8 +35,7 @@
 * Author: Eitan Marder-Eppstein
 *********************************************************************/
 #include <voxel_grid/voxel_grid.h>
-#ifdef WIN32
-#else
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 

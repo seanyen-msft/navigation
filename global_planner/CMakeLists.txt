@@ -20,8 +20,6 @@ generate_dynamic_reconfigure_options(
   cfg/GlobalPlanner.cfg
 )
 
-add_definitions(-D_USE_MATH_DEFINES)
-
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
@@ -43,7 +41,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME}
   src/quadratic_calculator.cpp
   src/dijkstra.cpp
   src/astar.cpp
@@ -64,10 +62,11 @@ target_link_libraries(planner
   ${catkin_LIBRARIES}
 )
 
-install(TARGETS ${PROJECT_NAME} planner
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(TARGETS ${PROJECT_NAME}
+  DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+
+install(TARGETS planner
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}

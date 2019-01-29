@@ -31,8 +31,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <assert.h>
-#ifdef WIN32
-#else
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 

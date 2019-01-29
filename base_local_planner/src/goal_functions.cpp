@@ -38,7 +38,7 @@
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2/utils.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-#ifdef WIN32
+#ifdef _MSC_VER
 #define GOAL_ATTRIBUTE_UNUSED
 #else
 #define GOAL_ATTRIBUTE_UNUSED __attribute__ ((unused))

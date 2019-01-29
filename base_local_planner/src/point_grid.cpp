@@ -37,7 +37,7 @@
 
 #include <base_local_planner/point_grid.h>
 #include <ros/console.h>
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 
@@ -674,14 +674,14 @@ int main(int argc, char** argv){
   point.y = 1.2;
   point.z = 1.0;
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
   struct timeval start, end;
   double start_t, end_t, t_diff;
 #endif
 
   printPSHeader();
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
   gettimeofday(&start, NULL);
 #endif
 
@@ -689,7 +689,7 @@ int main(int argc, char** argv){
     pg.insert(point);
   }
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
   gettimeofday(&end, NULL);
   start_t = start.tv_sec + double(start.tv_usec) / 1e6;
   end_t = end.tv_sec + double(end.tv_usec) / 1e6;
@@ -700,7 +700,7 @@ int main(int argc, char** argv){
   vector<Observation> obs;
   vector<PlanarLaserScan> scan;
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
   gettimeofday(&start, NULL);
 #endif
   pg.updateWorld(footprint, obs, scan);
@@ -709,7 +709,7 @@ int main(int argc, char** argv){
   pg.updateWorld(footprint, obs, scan);
   double legal2 = pg.footprintCost(pt, footprint, 0.0, .95);
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
   gettimeofday(&end, NULL);
   start_t = start.tv_sec + double(start.tv_usec) / 1e6;
   end_t = end.tv_sec + double(end.tv_usec) / 1e6;

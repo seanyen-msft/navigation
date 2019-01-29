@@ -37,7 +37,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#ifdef HAVE_LIBGEN_H
+#include <libgen.h>
+#endif
 #include <boost/filesystem.hpp>
 #include <fstream>
 
@@ -142,7 +144,6 @@ class MapServer
         }
         try {
           doc["image"] >> mapfname;
-
           // TODO: make this path-handling more robust
           if(mapfname.size() == 0)
           {

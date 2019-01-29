@@ -35,8 +35,8 @@
  * Author: Eitan Marder-Eppstein
  *         David V. Lu!!
  *********************************************************************/
-#include <algorithm>
 #include<global_planner/dijkstra.h>
+#include <algorithm>
 namespace global_planner {
 
 DijkstraExpansion::DijkstraExpansion(PotentialCalculator* p_calc, int nx, int ny) :

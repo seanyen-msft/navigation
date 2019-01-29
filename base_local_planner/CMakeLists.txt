@@ -29,8 +29,6 @@ find_package(Boost REQUIRED
 
 find_package(Eigen3 REQUIRED)
 remove_definitions(-DDISABLE_LIBUSB-1.0)
-add_definitions(-D_USE_MATH_DEFINES)
-
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
@@ -79,13 +77,18 @@ catkin_package(
         voxel_grid
 )
 
+check_include_file(sys/time.h HAVE_SYS_TIME_H)
+if (HAVE_SYS_TIME_H)
+  add_definitions(-DHAVE_SYS_TIME_H)
+endif (HAVE_SYS_TIME_H)
+
 #uncomment for profiling
 #set(ROS_COMPILE_FLAGS "-g -pg" ${ROS_COMPILE_FLAGS})
 #set(ROS_LINK_FLAGS "-g -pg" ${ROS_LINK_FLAGS})
 #set(ROS_COMPILE_FLAGS "-g" ${ROS_COMPILE_FLAGS})
 #set(ROS_LINK_FLAGS "-g" ${ROS_LINK_FLAGS})
 
-add_library(base_local_planner STATIC
+add_library(base_local_planner
 	src/footprint_helper.cpp
 	src/goal_functions.cpp
 	src/map_cell.cpp
@@ -114,7 +117,7 @@ target_link_libraries(base_local_planner
     ${Eigen_LIBRARIES}
     )
 
-add_library(trajectory_planner_ros STATIC
+add_library(trajectory_planner_ros
 	src/trajectory_planner.cpp
 	src/trajectory_planner_ros.cpp)
 add_dependencies(trajectory_planner_ros ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -128,8 +131,7 @@ target_link_libraries(point_grid ${catkin_LIBRARIES})
 install(TARGETS
             base_local_planner
             trajectory_planner_ros
-       ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-       LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+       DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
        )
 
 install(FILES blp_plugin.xml

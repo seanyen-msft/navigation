@@ -33,8 +33,6 @@ include_directories(
 )
 
 add_definitions(${EIGEN3_DEFINITIONS})
-add_definitions(-D_USE_MATH_DEFINES)
-
 
 # messages
 add_message_files(
