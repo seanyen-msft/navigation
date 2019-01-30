@@ -49,8 +49,6 @@
 #include "nav_msgs/MapMetaData.h"
 #include "yaml-cpp/yaml.h"
 
-namespace fs = boost::filesystem;
-
 #ifdef HAVE_YAMLCPP_GT_0_5_0
 // The >> operator disappeared in yaml-cpp 0.5, so this function is
 // added to provide support for code written under the yaml-cpp 0.3 API.
@@ -150,18 +148,14 @@ class MapServer
             ROS_ERROR("The image tag cannot be an empty string.");
             exit(-1);
           }
-          
-          if(!fs::exists(fs::status(mapfname)))
-          {
-            fs::path dir(fname);
-            dir += mapfname;
-            mapfname = dir.string();
-          }
 
-          if (!fs::exists(fs::status(mapfname)))
+          boost::filesystem::path mapfpath(mapfname);
+          if (!mapfpath.is_absolute())
           {
-            ROS_ERROR("The image tag cannot be found.");
-            exit(-1);
+            boost::filesystem::path dir(fname);
+            dir = dir.parent_path();
+            mapfpath = dir / mapfpath;
+            mapfname = mapfpath.string();
           }
         } catch (YAML::InvalidScalar &) {
           ROS_ERROR("The map does not contain an image tag or it is invalid.");
